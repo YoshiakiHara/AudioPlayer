@@ -6,15 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hara.audioplayer.MusicDataHolder
 import com.hara.audioplayer.R
-import com.hara.audioplayer.SelectCategoryActivity
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,7 +21,7 @@ class PlaceholderFragment : Fragment() {
     companion object {
         private const val TAG = "PlaceholderFragment"
         private var _context: Context? = null
-
+        private lateinit var _listener: RecyclerViewListener
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -36,7 +33,8 @@ class PlaceholderFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber : TabName): PlaceholderFragment {
+        fun newInstance(sectionNumber : TabName, listener: RecyclerViewListener): PlaceholderFragment {
+            _listener = listener
             return PlaceholderFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber.ordinal)
@@ -70,18 +68,16 @@ class PlaceholderFragment : Fragment() {
 
         when (pageViewModel._index.value) {
             TabName.ARTIST -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList)
+                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList,_listener)
             }
             TabName.ALBUM -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.albamList)
+                recyclerView.adapter = GeneralAdapter(MusicDataHolder.albamList,_listener)
             }
             else -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList)
+                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList,_listener)
             }
         }
 
-        pageViewModel.text.observe(this, Observer<String> {
-        })
         return root
     }
 
