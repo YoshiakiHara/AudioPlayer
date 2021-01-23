@@ -18,7 +18,6 @@ class PlayerActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playing)
-        val mediaPlayer = MediaPlayer();
 
         val intent = getIntent()
         when(intent.getStringExtra("FROM")){
@@ -38,22 +37,26 @@ class PlayerActivity : AppCompatActivity(){
             }
         }
 
-        val playButton = findViewById(R.id.play_button) as Button
         val pauseButton = findViewById(R.id.pause_button) as Button
-
-        playButton.setOnClickListener {
-
-            // 音楽ファイルをmediaplayerに設定
-            mediaPlayer.setDataSource(this,currentNumber.path.toUri())
-
-            // 再生準備、再生可能状態になるまでブロック
-            mediaPlayer.prepare()
-
-            // 再生開始
-            mediaPlayer.start()
-        }
+        // 音楽ファイルをmediaplayerに設定
+        CustomMediaPlayer.setDataSource(this,currentNumber.path.toUri())
+        // 再生準備、再生可能状態になるまでブロック
+        CustomMediaPlayer.prepare()
+        // 再生開始
+        CustomMediaPlayer.start()
         pauseButton.setOnClickListener {
-            mediaPlayer.pause()
+            if(pauseButton.text.equals("pause")){
+                pauseButton.text = "play"
+                CustomMediaPlayer.pause()
+            }else{
+                pauseButton.text = "pause"
+                CustomMediaPlayer.start()
+            }
         }
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.d(TAG,"Back Button Pressed");
+
     }
 }

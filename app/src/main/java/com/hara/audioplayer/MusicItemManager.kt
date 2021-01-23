@@ -3,6 +3,7 @@ package com.hara.audioplayer
 import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import java.util.*
@@ -23,14 +24,23 @@ class MusicItemManager(){
 
             // ContentResolver を取得
             val cr: ContentResolver = context.getContentResolver()
+            getMusicFromStorage(cr, MediaStore.Audio.Media.INTERNAL_CONTENT_URI,items)
+            getMusicFromStorage(cr, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,items)
 
-            // 外部ストレージから音楽を検索
+            // 見つかる順番はソートされていないため、アルバム単位でソートする
+            Collections.sort(items)
+            return items
+        }
+
+        fun getMusicFromStorage(cr: ContentResolver, uri: Uri, items: MutableList<MusicItem>){
+
+            // ストレージから音楽を検索
             val cur: Cursor? = cr.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                null,
-                MediaStore.Audio.Media.IS_MUSIC + " = 1",
-                null,
-                null
+                    uri,
+                    null,
+                    MediaStore.Audio.Media.IS_MUSIC + " = 1",
+                    null,
+                    null
             )
             if (cur != null) {
                 if (cur.moveToFirst()) {
@@ -55,15 +65,15 @@ class MusicItemManager(){
 //                                .toString() + " Title: " + cur.getString(titleColumn)
 //                        )
                         items.add(
-                            MusicItem(
-                                cur.getLong(idColumn),
-                                cur.getString(artistColumn),
-                                cur.getString(titleColumn),
-                                cur.getString(albumColumn),
-                                cur.getInt(idTruck),
-                                cur.getLong(durationColumn),
-                                cur.getString(dataColmun)
-                            )
+                                MusicItem(
+                                        cur.getLong(idColumn),
+                                        cur.getString(artistColumn),
+                                        cur.getString(titleColumn),
+                                        cur.getString(albumColumn),
+                                        cur.getInt(idTruck),
+                                        cur.getLong(durationColumn),
+                                        cur.getString(dataColmun)
+                                )
                         )
                     } while (cur.moveToNext())
                     Log.i(TAG, "Done querying media. MusicRetriever is ready.")
@@ -71,10 +81,6 @@ class MusicItemManager(){
                 // カーソルを閉じる
                 cur.close()
             }
-
-            // 見つかる順番はソートされていないため、アルバム単位でソートする
-            Collections.sort(items)
-            return items
         }
     }
 }
