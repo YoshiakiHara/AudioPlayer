@@ -4,5 +4,5 @@ interface RecyclerViewListener {
     /**
      * RecyclerViewのセルのボタンをクリックしたら
      */
-    fun onClickCategoryButton(text: String)
+    fun onClickRecyclerViewButton(text: String)
 }

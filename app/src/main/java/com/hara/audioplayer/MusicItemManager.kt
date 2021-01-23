@@ -49,11 +49,11 @@ class MusicItemManager(){
 
                     // リストに追加
                     do {
-                        Log.i(
-                            TAG,
-                            "ID: " + cur.getString(idColumn)
-                                .toString() + " Title: " + cur.getString(titleColumn)
-                        )
+//                        Log.i(
+//                            TAG,
+//                            "ID: " + cur.getString(idColumn)
+//                                .toString() + " Title: " + cur.getString(titleColumn)
+//                        )
                         items.add(
                             MusicItem(
                                 cur.getLong(idColumn),

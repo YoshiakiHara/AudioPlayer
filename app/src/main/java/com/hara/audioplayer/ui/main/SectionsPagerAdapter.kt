@@ -5,9 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.hara.audioplayer.R
-import com.hara.audioplayer.SelectCategoryActivity
 
 private val TAB_TITLES = arrayOf(
         R.string.tab_artist,
@@ -19,7 +17,7 @@ private val TAB_TITLES = arrayOf(
  * one of the sections/tabs/pages.
  */
 class SectionsPagerAdapter(private val context:Context, private val listener: RecyclerViewListener, fm: FragmentManager)
-    : FragmentPagerAdapter(fm),RecyclerViewListener {
+    : FragmentPagerAdapter(fm), RecyclerViewListener {
     companion object{
         private const val TAG = "SectionsPagerAdapter"
         private var _tabIndex: TabName = TabName.ALBUM
@@ -40,8 +38,8 @@ class SectionsPagerAdapter(private val context:Context, private val listener: Re
         return 2
     }
 
-    override fun onClickCategoryButton(text: String) {
+    override fun onClickRecyclerViewButton(text: String) {
         Log.v("クリック", "$text")
-        listener.onClickCategoryButton(text)
+        listener.onClickRecyclerViewButton(text)
     }
 }

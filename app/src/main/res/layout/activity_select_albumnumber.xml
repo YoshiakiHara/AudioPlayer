@@ -5,7 +5,7 @@
     android:id="@+id/cordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectArtistNumberActivity">
+    tools:context=".SelectAlbumNuberActibity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/artistnumber_list"
+            android:id="@+id/albumnumber_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

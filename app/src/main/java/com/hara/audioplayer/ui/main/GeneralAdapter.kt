@@ -3,7 +3,6 @@ package com.hara.audioplayer.ui.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hara.audioplayer.R
 
@@ -25,7 +24,7 @@ class GeneralAdapter(private val myDataset: MutableList<String>, private val lis
         holder.button.apply {
             holder.button.text = myDataset[position]
             holder.button.setOnClickListener {
-                listener.onClickCategoryButton(myDataset[position])
+                listener.onClickRecyclerViewButton(myDataset[position])
             }
         }
     }

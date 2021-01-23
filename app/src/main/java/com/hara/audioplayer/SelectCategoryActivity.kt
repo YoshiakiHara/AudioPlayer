@@ -54,18 +54,22 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
         })
     }
 
-    override fun onClickCategoryButton(artist: String) {
-        Log.v(TAG, "Click category:" + "$artist")
+    override fun onClickRecyclerViewButton(category: String) {
+        Log.v(TAG, "Click category:" + "$category")
         when(_currentTab) {
             TabName.ARTIST -> {
-                val intent = Intent(this@SelectCategoryActivity, SelectNumberActivity::class.java)
+                val intent = Intent(this@SelectCategoryActivity, SelectArtistNumberActivity::class.java)
 
                 // todo Stringはどこかでまとめて定義
-                intent.putExtra("ARTIST", artist);
+                intent.putExtra("ARTIST", category);
                 startActivity(intent)
             }
             TabName.ALBUM -> {
+                val intent = Intent(this@SelectCategoryActivity, SelectAlbumNuberActibity::class.java)
 
+                // todo Stringはどこかでまとめて定義
+                intent.putExtra("ALBUM", category);
+                startActivity(intent)
             }
             else -> {
 

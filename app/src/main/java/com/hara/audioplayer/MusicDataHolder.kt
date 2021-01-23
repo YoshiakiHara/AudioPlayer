@@ -17,7 +17,7 @@ object MusicDataHolder {
                 if(!albamList.contains(i.album)){
                     albamList.add(i.album)
                 }
-                Log.i(TAG, "artist:" + i.artist + " album:" + i.album)
+//                Log.i(TAG, "artist:" + i.artist + " album:" + i.album)
             }
         }
     }

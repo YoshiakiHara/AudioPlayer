@@ -1,10 +1,8 @@
 package com.hara.audioplayer
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +10,7 @@ import com.hara.audioplayer.ui.main.GeneralAdapter
 import com.hara.audioplayer.ui.main.RecyclerViewListener
 
 
-class SelectNumberActivity : AppCompatActivity(),RecyclerViewListener {
+class SelectArtistNumberActivity : AppCompatActivity(), RecyclerViewListener {
 
     companion object {
         private const val TAG = "SelectNumberActivity"
@@ -28,8 +26,19 @@ class SelectNumberActivity : AppCompatActivity(),RecyclerViewListener {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = GeneralAdapter(ArtistNumberHolder.artistNumberList,this)
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.d(TAG,"Back Button Pressed");
+        ArtistNumberHolder.artistNumberIdList.clear()
+        ArtistNumberHolder.artistNumberList.clear()
+    }
+    override fun onClickRecyclerViewButton(number: String) {
+        val intent = Intent(this@SelectArtistNumberActivity, PlayerActivity::class.java)
 
-    override fun onClickCategoryButton(text: String) {
-        Log.v(TAG, "Click title:" + "$text")
+        // todo Stringはどこかでまとめて定義
+        intent.putExtra("NUMBER", number);
+        intent.putExtra("FROM", "ARTIST");
+
+        startActivity(intent)
     }
 }
