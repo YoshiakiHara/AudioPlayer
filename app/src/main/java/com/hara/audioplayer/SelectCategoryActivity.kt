@@ -33,7 +33,9 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
         }
 
         // 音楽データの取得
-        MusicDataHolder.setMusicInfoList(MusicItemManager.getItems(applicationContext))
+        if(MusicDataHolder.musicItems.isEmpty()) {
+            MusicDataHolder.setMusicInfoList(MusicItemManager.getItems(applicationContext))
+        }
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this,this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
@@ -42,8 +44,13 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
         tabLayout.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val intent = Intent(this, PlayerActivity::class.java)
+
+            // todo Stringはどこかでまとめて定義
+            intent.putExtra("NUMBER", CustomMediaPlayer.currentPlayingMusic.title);
+            intent.putExtra("FROM", "FLOATINGBUTTON");
+
+            startActivity(intent)
         }
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -76,7 +83,7 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
                 startActivity(intent)
             }
             TabName.ALBUM -> {
-                val intent = Intent(this@SelectCategoryActivity, SelectAlbumNuberActibity::class.java)
+                val intent = Intent(this@SelectCategoryActivity, SelectAlbumNumberActibity::class.java)
 
                 // todo Stringはどこかでまとめて定義
                 intent.putExtra("ALBUM", category);

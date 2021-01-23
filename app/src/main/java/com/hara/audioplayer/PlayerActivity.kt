@@ -12,7 +12,6 @@ import java.io.FileDescriptor
 class PlayerActivity : AppCompatActivity(){
     companion object {
         private const val TAG = "PlayerActivity"
-        private lateinit var currentNumber: MusicItem
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,16 +25,20 @@ class PlayerActivity : AppCompatActivity(){
                     if(item.title.equals(intent.getStringExtra("NUMBER"))){
                         MusicDataHolder.musicItems.forEach{ i ->
                             if(i.id == item.id){
-                                currentNumber = i
+                                CustomMediaPlayer.currentPlayingMusic = i
                             }
                         }
                     }
                 }
             }
             "ALBUM" -> {
-                AlbumNumberHolder.albumNumberList.forEachIndexed{ index,item ->
-                    if(item.equals(intent.getStringExtra("NUMBER"))){
-                        currentNumber = MusicDataHolder.musicItems.get(AlbumNumberHolder.albumNumberIdList.get(index))
+                AlbumNumberHolder.albumNumberList.forEach{ item ->
+                    if(item.title.equals(intent.getStringExtra("NUMBER"))){
+                        MusicDataHolder.musicItems.forEach { i ->
+                            if(i.id == item.id) {
+                                CustomMediaPlayer.currentPlayingMusic = i
+                            }
+                        }
                     }
                 }
             }
@@ -43,7 +46,7 @@ class PlayerActivity : AppCompatActivity(){
 
         val pauseButton = findViewById(R.id.pause_button) as Button
         // 音楽ファイルをmediaplayerに設定
-        CustomMediaPlayer.setDataSource(this,currentNumber.path.toUri())
+        CustomMediaPlayer.setDataSource(this)
         // 再生準備、再生可能状態になるまでブロック
         CustomMediaPlayer.prepare()
         // 再生開始

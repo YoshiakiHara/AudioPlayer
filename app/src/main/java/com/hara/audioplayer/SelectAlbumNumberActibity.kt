@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hara.audioplayer.ui.main.GeneralAdapter
 import com.hara.audioplayer.ui.main.RecyclerViewListener
 
-class SelectAlbumNuberActibity: AppCompatActivity(), RecyclerViewListener {
+class SelectAlbumNumberActibity: AppCompatActivity(), RecyclerViewListener {
 
     companion object {
         private const val TAG = "SelectAlbumNuberActibity"
@@ -23,18 +23,21 @@ class SelectAlbumNuberActibity: AppCompatActivity(), RecyclerViewListener {
         AlbumNumberHolder.setArtistMusicList(intent.getStringExtra("ALBUM"))
         val recyclerView: RecyclerView = findViewById(R.id.albumnumber_list)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = GeneralAdapter(AlbumNumberHolder.albumNumberList,this)
+        val albumList: MutableList<String> = mutableListOf()
+        AlbumNumberHolder.albumNumberList.forEach{ i ->
+            albumList.add(i.title)
+        }
+        recyclerView.adapter = GeneralAdapter(albumList,this)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         Log.d(TAG,"Back Button Pressed");
-        AlbumNumberHolder.albumNumberIdList.clear()
         AlbumNumberHolder.albumNumberList.clear()
     }
 
     override fun onClickRecyclerViewButton(number: String) {
-        val intent = Intent(this@SelectAlbumNuberActibity, PlayerActivity::class.java)
+        val intent = Intent(this@SelectAlbumNumberActibity, PlayerActivity::class.java)
 
         // todo Stringはどこかでまとめて定義
         intent.putExtra("NUMBER", number);
