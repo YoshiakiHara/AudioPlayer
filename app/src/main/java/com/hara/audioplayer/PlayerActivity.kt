@@ -22,9 +22,13 @@ class PlayerActivity : AppCompatActivity(){
         val intent = getIntent()
         when(intent.getStringExtra("FROM")){
             "ARTIST" -> {
-                ArtistNumberHolder.artistNumberList.forEachIndexed{ index,item ->
-                    if(item.equals(intent.getStringExtra("NUMBER"))){
-                        currentNumber = MusicDataHolder.musicItems.get(ArtistNumberHolder.artistNumberIdList.get(index))
+                ArtistNumberHolder.artistNumberList.forEach{ item ->
+                    if(item.title.equals(intent.getStringExtra("NUMBER"))){
+                        MusicDataHolder.musicItems.forEach{ i ->
+                            if(i.id == item.id){
+                                currentNumber = i
+                            }
+                        }
                     }
                 }
             }

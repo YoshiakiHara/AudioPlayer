@@ -24,12 +24,15 @@ class SelectArtistNumberActivity : AppCompatActivity(), RecyclerViewListener {
         ArtistNumberHolder.setArtistMusicList(intent.getStringExtra("ARTIST"))
         val recyclerView: RecyclerView = findViewById(R.id.artistnumber_list)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = GeneralAdapter(ArtistNumberHolder.artistNumberList,this)
+        val artistList: MutableList<String> = mutableListOf()
+        ArtistNumberHolder.artistNumberList.forEach{ i ->
+            artistList.add(i.title)
+        }
+        recyclerView.adapter = GeneralAdapter(artistList,this)
     }
     override fun onBackPressed() {
         super.onBackPressed()
         Log.d(TAG,"Back Button Pressed");
-        ArtistNumberHolder.artistNumberIdList.clear()
         ArtistNumberHolder.artistNumberList.clear()
     }
     override fun onClickRecyclerViewButton(number: String) {

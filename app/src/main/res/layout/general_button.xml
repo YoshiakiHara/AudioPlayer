@@ -9,4 +9,5 @@
     android:insetBottom="0dp"
     android:orientation="vertical"
     android:textSize="15sp"
+    android:textAllCaps="false"
     app:cornerRadius="@dimen/corner_0dp" />
