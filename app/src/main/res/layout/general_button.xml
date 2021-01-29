@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/navy_2"
+    android:gravity="center_vertical"
     android:insetTop="0dp"
     android:insetBottom="0dp"
     android:orientation="vertical"
-    android:textSize="15sp"
+    android:text="sample"
     android:textAllCaps="false"
+    android:textSize="15sp"
     app:cornerRadius="@dimen/corner_0dp" />

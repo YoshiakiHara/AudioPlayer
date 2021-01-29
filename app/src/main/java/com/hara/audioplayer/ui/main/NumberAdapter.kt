@@ -4,16 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
+import com.hara.audioplayer.AlbumNumberHolder
+import com.hara.audioplayer.ArtistNumberHolder
 import com.hara.audioplayer.R
 
-class GeneralAdapter(private val myDataset: MutableList<String>, private val listener: RecyclerViewListener) :
-    RecyclerView.Adapter<GeneralAdapter.ViewHolder>() {
+class NumberAdapter(private val myDataset: MutableList<String>, private val listener: RecyclerViewListener, private val transition:TransionFrom) :
+    RecyclerView.Adapter<NumberAdapter.ViewHolder>() {
 
     // RecyclerViewの一要素となるXML要素の型を引数に指定する
 //    class ViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
     class ViewHolder(val button: Button): RecyclerView.ViewHolder(button)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberAdapter.ViewHolder {
         val button = LayoutInflater.from(parent.context)
             .inflate(R.layout.general_button, parent, false) as Button
         return ViewHolder(button)
@@ -24,7 +26,14 @@ class GeneralAdapter(private val myDataset: MutableList<String>, private val lis
         holder.button.apply {
             holder.button.text = myDataset[position]
             holder.button.setOnClickListener {
-                listener.onClickRecyclerViewButton(myDataset[position])
+                when(transition){
+                    TransionFrom.ARTIST -> {
+                        listener.onClickRecyclerViewButton(ArtistNumberHolder.artistNumberList[position].id.toString())
+                    }
+                    TransionFrom.ALBUM -> {
+                        listener.onClickRecyclerViewButton(AlbumNumberHolder.albumNumberList[position].id.toString())
+                    }
+                }
             }
         }
     }

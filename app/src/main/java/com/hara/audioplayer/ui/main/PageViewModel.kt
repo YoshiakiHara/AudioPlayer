@@ -13,9 +13,3 @@ class PageViewModel : ViewModel() {
         _index.value = index
     }
 }
-
-enum class TabName() {
-    ARTIST,
-    ALBUM,
-    OTHER
-}

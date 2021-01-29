@@ -33,7 +33,7 @@ class PlaceholderFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber : TabName, listener: RecyclerViewListener): PlaceholderFragment {
+        fun newInstance(sectionNumber : TransionFrom, listener: RecyclerViewListener): PlaceholderFragment {
             _listener = listener
             return PlaceholderFragment().apply {
                 arguments = Bundle().apply {
@@ -50,7 +50,7 @@ class PlaceholderFragment : Fragment() {
             val num:Int? = arguments?.getInt(ARG_SECTION_NUMBER)
 
             if( num != null ) {
-                Log.i(TAG,"tab number is null!!!" + num.toString());
+                Log.i(TAG,"tab number is " + num.toString());
                 setIndex(TabName.values()[num] ?: TabName.OTHER)
             }else{
                 Log.i(TAG,"tab number is null!!!");
@@ -68,13 +68,13 @@ class PlaceholderFragment : Fragment() {
 
         when (pageViewModel._index.value) {
             TabName.ARTIST -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList,_listener)
+                recyclerView.adapter = SelectCategoryAdapter(MusicDataHolder.artistList,_listener)
             }
             TabName.ALBUM -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.albamList,_listener)
+                recyclerView.adapter = SelectCategoryAdapter(MusicDataHolder.albamList,_listener)
             }
             else -> {
-                recyclerView.adapter = GeneralAdapter(MusicDataHolder.artistList,_listener)
+                recyclerView.adapter = SelectCategoryAdapter(MusicDataHolder.artistList,_listener)
             }
         }
 

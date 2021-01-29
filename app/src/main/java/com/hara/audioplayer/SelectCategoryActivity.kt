@@ -1,26 +1,29 @@
 package com.hara.audioplayer
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.hara.audioplayer.ui.main.RecyclerViewListener
 import com.hara.audioplayer.ui.main.SectionsPagerAdapter
-import com.hara.audioplayer.ui.main.TabName
+import com.hara.audioplayer.ui.main.TransionFrom
 
 
 class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
     companion object{
         private const val TAG = "SelectCategoryActivity"
-        private var _currentTab = TabName.ARTIST
+        private var _currentTab = TransionFrom.ARTIST
         private const val PERMISSION_READ_EX_STR = 1
+        private lateinit var _fab: FloatingActionButton
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_category)
@@ -42,22 +45,14 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
         viewPager.adapter = sectionsPagerAdapter
         val tabLayout: TabLayout = findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            val intent = Intent(this, PlayerActivity::class.java)
-
-            // todo Stringはどこかでまとめて定義
-            intent.putExtra("NUMBER", CustomMediaPlayer.currentPlayingMusic.title);
-            intent.putExtra("FROM", "FLOATINGBUTTON");
-
-            startActivity(intent)
-        }
+        _fab = findViewById(R.id.fab)
+        PlayingFABController.initializeFAB(this, _fab)
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             // タブが選択された際に呼ばれる
             override fun onTabSelected(tab: TabLayout.Tab) {
-                _currentTab = TabName.values()[tab.position]
+                _currentTab = TransionFrom.values()[tab.position]
             }
 
             // タブが未選択になった際に呼ばれる
@@ -73,16 +68,16 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
     }
 
     override fun onClickRecyclerViewButton(category: String) {
-        Log.v(TAG, "Click category:" + "$category")
+        Log.v(TAG, "Click category:" + category)
         when(_currentTab) {
-            TabName.ARTIST -> {
+            TransionFrom.ARTIST -> {
                 val intent = Intent(this@SelectCategoryActivity, SelectArtistNumberActivity::class.java)
 
                 // todo Stringはどこかでまとめて定義
                 intent.putExtra("ARTIST", category);
                 startActivity(intent)
             }
-            TabName.ALBUM -> {
+            TransionFrom.ALBUM -> {
                 val intent = Intent(this@SelectCategoryActivity, SelectAlbumNumberActibity::class.java)
 
                 // todo Stringはどこかでまとめて定義
@@ -93,5 +88,19 @@ class SelectCategoryActivity : AppCompatActivity(), RecyclerViewListener {
 
             }
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        PlayingFABController.initializeFAB(this, _fab)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val dataStore: SharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
+        val editor: SharedPreferences.Editor = dataStore.edit()
+        // todo String
+        editor.putInt("SEEK_TIME", CustomMediaPlayer.getCurrentTime())
+        editor.apply();
     }
 }

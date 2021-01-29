@@ -20,13 +20,13 @@ class SectionsPagerAdapter(private val context:Context, private val listener: Re
     : FragmentPagerAdapter(fm), RecyclerViewListener {
     companion object{
         private const val TAG = "SectionsPagerAdapter"
-        private var _tabIndex: TabName = TabName.ALBUM
+        private var _tabIndex: TransionFrom = TransionFrom.ALBUM
     }
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         Log.i(TAG,"position:" + position)
-        return PlaceholderFragment.newInstance(TabName.values()[position],this)
+        return PlaceholderFragment.newInstance(TransionFrom.values()[position],this)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -38,8 +38,8 @@ class SectionsPagerAdapter(private val context:Context, private val listener: Re
         return 2
     }
 
-    override fun onClickRecyclerViewButton(text: String) {
-        Log.v("クリック", "$text")
-        listener.onClickRecyclerViewButton(text)
+    override fun onClickRecyclerViewButton(category: String) {
+        Log.v("クリック", "$category")
+        listener.onClickRecyclerViewButton(category)
     }
 }
